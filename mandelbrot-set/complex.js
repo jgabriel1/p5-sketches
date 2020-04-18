@@ -4,7 +4,7 @@ class Complex {
         this.imag = imag
     }
 
-    abs = () => Math.sqrt(Math.pow(this.real, 2) - Math.pow(this.imag, 2))
+    abs = () => Math.sqrt(this.real * this.real - this.imag * this.imag)
 
     plus(other) {
         const resultReal = this.real + other.real 

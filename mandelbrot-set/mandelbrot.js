@@ -6,28 +6,29 @@ mandelbrot = (real, imag, iter) => {
         let z = new Complex(0, 0)
         z = x.times(x).plus(c)
 
-        if (z.abs() > 2) {
-            return i
-        } else {
-            x = z
-        }
+        if (z.abs() > 2) return i
+        else x = z
     }
     return 0
 }
 
-mandelbrotMatrix = (size, x0, x1, y0, y1) => {
-    const deltaX = (x1 - x0) / size
-    const deltaY = (y1 - y0) / size
-    let x, y
-    let mat = new Array(size)
+/* 
+This function doesn't really make it any faster.
+The map function seems like it does what I was doing before
+but under the hood.
+*/
+mandelbrotSet = (x0, x1, y0, y1, iter) => {
+    loadPixels()
+    for (let x = 0; x < width; x++) {
+        for (let y = 0; y < height; y++) {
+            let real = map(x, 0, width, x0, x1)
+            let imag = map(y, 0, height, y0, y1)
 
-    for (let i = 0; i < size; i++) {
-        y = y0 + deltaY * i
-        mat[i] = new Array(size)
-        for (let j = 0; j < size; j++) {
-            x = x0 + deltaX * j
-            mat[i][j] = mandelbrot(y, x, 100)
+            let pixel = (x + y * width) * 4
+            pixels[pixel] = mandelbrot(real, imag, iter) * 255 / iter
+            pixels[pixel + 1] = mandelbrot(real, imag, iter) * 255 / iter
+            pixels[pixel + 2] = mandelbrot(real, imag, iter) * 255 / iter
         }
     }
-    return mat
+    updatePixels()
 }
