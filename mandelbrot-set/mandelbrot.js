@@ -9,7 +9,7 @@ mandelbrot = (real, imag, iter) => {
         if (z.abs() > 2) return i
         else x = z
     }
-    return 0
+    return iter
 }
 
 /* 
@@ -25,9 +25,9 @@ mandelbrotSet = (x0, x1, y0, y1, iter) => {
             let imag = map(y, 0, height, y0, y1)
 
             let pixel = (x + y * width) * 4
-            pixels[pixel] = mandelbrot(real, imag, iter) * 255 / iter
-            pixels[pixel + 1] = mandelbrot(real, imag, iter) * 255 / iter
-            pixels[pixel + 2] = mandelbrot(real, imag, iter) * 255 / iter
+            pixels[pixel] = 255 - mandelbrot(real, imag, iter) * 255 / iter
+            pixels[pixel + 1] = 255 - mandelbrot(real, imag, iter) * 255 / iter
+            pixels[pixel + 2] = 255 - mandelbrot(real, imag, iter) * 255 / iter
         }
     }
     updatePixels()
