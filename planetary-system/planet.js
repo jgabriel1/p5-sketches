@@ -1,31 +1,32 @@
 class Planet {
-    constructor(x, y, radius, velX, velY, aclX, aclY) {
-        this.pos = createVector(x, y)
+    constructor(x, y, radius, velX, velY, color) {
+        this.side = random([-1, 1])
+        this.pos = createVector(this.side * x, y) || createVector()
         this.radius = radius
-        this.velocity = createVector(0, -25)
+        this.mass = radius ** 3
+        this.velocity = createVector(velX, this.side * velY) || createVector()
+        this.color = color || {
+            r: random(50, 200),
+            g: random(50, 200),
+            b: random(50, 200)
+        }
     }
 
     move() {
         const deltaV = this.velocity.copy()
         deltaV.mult(dt)
         this.pos.add(deltaV)
-
-        if (this.pos.x >= width || this.pos.y >= height) {
-            this.pos.x = 0
-            this.pos.y = 0
-            this.velocity = createVector(0, 0)
-        }
-
     }
 
-    show(color) {
-        fill(color)
+    show() {
+        fill(this.color.r, this.color.g, this.color.b)
         ellipse(this.pos.x, this.pos.y, this.radius)
     }
 
     pull(planet) {
-        const force = p5.Vector.sub(this.pos, planet.pos)
-        force.setMag(2) // arbitrary value
+        const dist = p5.Vector.sub(this.pos, planet.pos)
+        const force = dist.normalize()
+        force.setMag(dt * G * this.mass / (dist.mag() ** 2))
         planet.velocity.add(force)
     }
 }
