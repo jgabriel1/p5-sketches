@@ -1,24 +1,31 @@
-class Planet extends p5.Vector {
+class Planet {
     constructor(x, y, radius, velX, velY, aclX, aclY) {
-        super(x, y)
+        this.pos = createVector(x, y)
         this.radius = radius
-        this.velocity = createVector(velX, velY) // this is the direction of the velocity
-        this.acceleration = createVector(aclX, aclY) // this is the direction of the acceleration
+        this.velocity = createVector(0, -25)
     }
 
     move() {
-        this.add(this.velocity)
-        this.velocity.add(this.acceleration)
+        const deltaV = this.velocity.copy()
+        deltaV.mult(dt)
+        this.pos.add(deltaV)
 
-        if (this.x >= windowWidth || this.y >= windowHeight) {
-            this.x = windowWidth / 2
-            this.y = windowHeight / 2
+        if (this.pos.x >= width || this.pos.y >= height) {
+            this.pos.x = 0
+            this.pos.y = 0
             this.velocity = createVector(0, 0)
         }
+
     }
 
     show(color) {
         fill(color)
-        ellipse(this.x, this.y, this.radius, this.radius)
+        ellipse(this.pos.x, this.pos.y, this.radius)
+    }
+
+    pull(planet) {
+        const force = p5.Vector.sub(this.pos, planet.pos)
+        force.setMag(2) // arbitrary value
+        planet.velocity.add(force)
     }
 }
