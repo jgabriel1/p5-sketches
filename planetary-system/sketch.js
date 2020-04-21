@@ -11,28 +11,29 @@ function setup() {
 	frameRate(60)
 	createCanvas(600, 600)
 
-	sun = new Planet(0, 0, 100, 0, 0, {
-		r: 250,
-		g: 180,
-		b: 0
+	sun = new Planet({
+		radius: 100,
+		color: {
+			r: 250,
+			g: 180,
+			b: 0
+		}
 	})
 
-	nPlanets = random(1, 5)
+	nPlanets = random(1, 2)
 	for (let i = 0; i < nPlanets; i++) {
-		let side = random([-1, 1])
-		planets[i] = new Planet(
-			x = random(100, 200),
-			y = 0,
-			radius = random(5, 30),
-			velX = 0,
-			velY = 200
-		)
+		planets[i] = new Planet({
+			x: random(100, 200),
+			y: 0,
+			vel: createVector(0, 200),
+			radius: random(5, 30)
+		})
 	}
 }
 
 function draw() {
-	translate(width / 2, height / 2)
 	background(10)
+	translate(width / 2, height / 2)
 
 	sun.show(250, 180, 0)
 	for (let planet of planets) {
